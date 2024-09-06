@@ -13,7 +13,5 @@ import { MongooseModule } from '@nestjs/mongoose';
     MongooseModule.forRoot('mongodb://localhost:27017/nest-meadi-app'),
     UsersModule,
   ],
-  controllers: [],
-  providers: [],
 })
 export class AppModule {}

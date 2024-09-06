@@ -25,7 +25,7 @@ export class User extends Document {
   password: string;
 
   @Prop({
-    enum: ['Admin', 'Creator', 'Reader'],
+    enum: ['admin', 'creator', 'reader'],
     required: true,
   })
   role: string;
