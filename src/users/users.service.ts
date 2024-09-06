@@ -4,11 +4,12 @@ import {
   HttpStatus,
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
-import { Model } from 'mongoose';
+import { isValidObjectId, Model } from 'mongoose';
 import { User } from './entities/user.entity';
 import { InjectModel } from '@nestjs/mongoose';
 
@@ -42,12 +43,34 @@ export class UsersService {
     return `This action returns all users`;
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} user`;
+  async findOne(term: string) {
+    let user: User;
+
+    //Validando MongoID
+    if (!user && isValidObjectId(term)) {
+      user = await this.userModel.findById(term);
+    }
+
+    // Validando userName
+    if (!user) {
+      user = await this.userModel.findOne({
+        userName: term.trim(),
+      });
+    }
+
+    if (!user) {
+      throw new NotFoundException(`User with id or name ${term} not found`);
+    }
+    return user;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  update(term: string, updateUserDto: UpdateUserDto) {
+    const user = this.findOne(term);
+
+    if (user) {
+    }
+
+    return user;
   }
 
   remove(id: number) {
