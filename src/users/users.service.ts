@@ -21,21 +21,13 @@ export class UsersService {
   ) {}
 
   async create(createUserDto: CreateUserDto) {
+    createUserDto.userName = createUserDto.userName.toLocaleLowerCase();
     try {
       const user = await this.userModel.create(createUserDto);
 
       return user;
     } catch (error) {
-      console.log(error);
-      if (error.code === 11000) {
-        throw new BadRequestException(
-          `UserName or Email ${JSON.stringify(error.keyValue)} already exist in DB `,
-        );
-      } else {
-        throw new InternalServerErrorException(
-          `Can't create user - Check server logs`,
-        );
-      }
+      this.handleExceptions(error);
     }
   }
 
@@ -64,16 +56,36 @@ export class UsersService {
     return user;
   }
 
-  update(term: string, updateUserDto: UpdateUserDto) {
-    const user = this.findOne(term);
-
-    if (user) {
+  async update(term: string, updateUserDto: UpdateUserDto) {
+    if (updateUserDto.userName) {
+      updateUserDto.userName = updateUserDto.userName.toLocaleLowerCase();
     }
+    try {
+      const user = await this.findOne(term);
 
-    return user;
+      await user.updateOne(updateUserDto);
+
+      return { ...user.toJSON(), ...updateUserDto };
+    } catch (error) {
+      this.handleExceptions(error);
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: string) {
+    const user = await this.findOne(id);
+
+    await user.deleteOne();
+  }
+
+  private handleExceptions(error: any) {
+    if (error.code === 11000) {
+      throw new BadRequestException(
+        `UserName or Email ${JSON.stringify(error.keyValue)} already exist in DB `,
+      );
+    } else {
+      throw new InternalServerErrorException(
+        `Can't create user - Check server logs`,
+      );
+    }
   }
 }
