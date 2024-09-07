@@ -5,6 +5,7 @@ import { join } from 'path';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CommonModule } from './common/common.module';
 import { ContentModule } from './content/content.module';
+import { ThemeModule } from './theme/theme.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { ContentModule } from './content/content.module';
     UsersModule,
     CommonModule,
     ContentModule,
+    ThemeModule,
   ],
 })
 export class AppModule {}
