@@ -72,9 +72,12 @@ export class UsersService {
   }
 
   async remove(id: string) {
-    const user = await this.findOne(id);
+    const { deletedCount } = await this.userModel.deleteOne({ _id: id });
+    if (deletedCount === 0) {
+      throw new BadRequestException(`MongoId with ${id} not found`);
+    }
 
-    await user.deleteOne();
+    return;
   }
 
   private handleExceptions(error: any) {
