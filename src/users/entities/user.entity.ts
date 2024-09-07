@@ -1,6 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
+export enum UserRole {
+  ADMIN = 'admin',
+  CREATOR = 'creator',
+  READER = 'reader',
+}
+
 @Schema()
 export class User extends Document {
   @Prop({
@@ -25,8 +31,9 @@ export class User extends Document {
   password: string;
 
   @Prop({
-    enum: ['admin', 'creator', 'reader'],
+    enum: UserRole,
     required: true,
+    lowercase: true,
   })
   role: string;
 }
