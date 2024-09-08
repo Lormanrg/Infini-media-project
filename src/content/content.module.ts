@@ -14,6 +14,10 @@ import { Theme, themeSchema } from 'src/theme/entities/theme.entity';
         name: Content.name,
         schema: contentSchema,
       },
+      {
+        name: Theme.name,
+        schema: themeSchema,
+      },
     ]),
   ],
   controllers: [ContentController],

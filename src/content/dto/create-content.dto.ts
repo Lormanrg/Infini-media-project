@@ -1,4 +1,10 @@
-import { IsEnum, IsNotEmpty, IsString, ValidateIf } from 'class-validator';
+import {
+  IsEnum,
+  IsNotEmpty,
+  IsString,
+  IsUrl,
+  ValidateIf,
+} from 'class-validator';
 import { ContentType } from '../entities/content.entity';
 
 export class CreateContentDto {
@@ -14,6 +20,7 @@ export class CreateContentDto {
     (o) => o.type === ContentType.IMAGE || o.type === ContentType.VIDEO,
   )
   @IsString()
+  @IsUrl({}, { message: `URL must be a valid URL.` })
   url: string;
 
   @ValidateIf((o) => o.type === ContentType.TEXT)

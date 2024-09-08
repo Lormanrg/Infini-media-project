@@ -43,7 +43,7 @@ export class Content extends Document {
     ref: Theme.name,
     required: true,
   })
-  themeId: string;
+  themeId: Types.ObjectId;
 }
 
 export const contentSchema = SchemaFactory.createForClass(Content);

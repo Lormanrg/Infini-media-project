@@ -9,7 +9,7 @@ export class CreateThemeDto {
   allowsImage: boolean;
 
   @IsBoolean()
-  alowsVideos: boolean;
+  allowsVideos: boolean;
 
   @IsBoolean()
   allowsTexts: boolean;
