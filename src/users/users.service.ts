@@ -35,6 +35,10 @@ export class UsersService {
     return `This action returns all users`;
   }
 
+  async findOneByEmail(email: string) {
+    return this.userModel.findOne({ email });
+  }
+
   async findOne(term: string) {
     let user: User;
 
@@ -50,8 +54,17 @@ export class UsersService {
       });
     }
 
+    //Validando email
     if (!user) {
-      throw new NotFoundException(`User with id or name ${term} not found`);
+      user = await this.userModel.findOne({
+        email: term.trim(),
+      });
+    }
+
+    if (!user) {
+      throw new NotFoundException(
+        `User with id, name or email ${term} not found`,
+      );
     }
     return user;
   }
