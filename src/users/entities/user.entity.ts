@@ -24,7 +24,6 @@ export class User extends Document {
   email: string;
 
   @Prop({
-    index: true,
     required: true,
   })
   password: string;

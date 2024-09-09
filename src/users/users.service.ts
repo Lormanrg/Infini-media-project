@@ -35,8 +35,8 @@ export class UsersService {
     return `This action returns all users`;
   }
 
-  async findOneByEmail(email: string) {
-    return this.userModel.findOne({ email });
+  async findOneByUserName(userName: string) {
+    return this.userModel.findOne({ userName });
   }
 
   async findOne(term: string) {
