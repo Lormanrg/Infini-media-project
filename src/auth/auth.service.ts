@@ -18,12 +18,15 @@ export class AuthService {
   ) {}
 
   async register({ email, password, userName, role }: RegisterDto) {
-    const registerUser = this.userService.create({
+    await this.userService.create({
       email,
       userName,
       role,
       password: await bcryptjs.hash(password, 10),
     });
+
+    const registerUser = { userName, role };
+
     return registerUser;
   }
 
@@ -38,7 +41,7 @@ export class AuthService {
       throw new UnauthorizedException(`Password is wrong`);
     }
 
-    const payload = { userName: user.userName };
+    const payload = { userName: user.userName, role: user.role };
 
     const token = await this.jwtService.signAsync(payload);
 
@@ -46,5 +49,9 @@ export class AuthService {
       token,
       userName,
     };
+  }
+
+  async profile({ userName, role }: { userName: string; role: string }) {
+    return await this.userService.findOneByUserName(userName);
   }
 }

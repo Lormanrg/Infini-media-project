@@ -14,7 +14,7 @@ import { AuthModule } from './auth/auth.module';
       rootPath: join(__dirname, '..', 'public'),
     }),
 
-    MongooseModule.forRoot('mongodb://localhost:27017/nest-meadi-app'),
+    MongooseModule.forRoot('mongodb://localhost:27018/nest-media-app'),
     UsersModule,
     CommonModule,
     ContentModule,
